@@ -39,6 +39,6 @@ vc_name       := $(vc_crystal_name)
 
 Copy your original dumped .cia files to `vc/<build_name>.orig.cia`. Where `<build_name>` represents the names of the `.gbc` files that is output from your installed pret repository. In the case of Pokemon Crystal, it should be:
 
- `poke-cia/pokecrystal11.cia`
+ `poke-cia/pokecrystal11.orig.cia`
 
 Now you can run `make cia` and be on your merry way!
