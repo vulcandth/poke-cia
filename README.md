@@ -9,6 +9,7 @@ Requirements
 * A recent [pokecrystal](https://github.com/pret/pokecrystal), [pokegold](https://github.com/pret/pokegold), [pokered](https://github.com/pret/pokered), or [pokeyellow](https://github.com/pret/pokeyellow) installation, that supports building Virtual Console patches.
 * An original (encrypted or decrypted) `.cia` file.
 * [ctrtool and makerom](https://github.com/profi200/Project_CTR) (Only master has been tested)
+* Obtain `seeddb.bin`, here is a link: [seeddb.bin](https://github.com/ihaveamac/3DS-rom-tools/raw/master/seeddb/seeddb.bin)
 
 Obtaining the original file is outside of the scope of this document. It can be legally obtained by extracting it from your console through tools such as GodMode9 and/or FunkyCIA.
 
@@ -37,8 +38,10 @@ Modify your `/poke-cia/cia-config.mk` file using a text editor of your choice, a
 vc_name       := $(vc_crystal_name)
 ```
 
-Copy your original dumped .cia files to `vc/<build_name>.orig.cia`. Where `<build_name>` represents the names of the `.gbc` files that is output from your installed pret repository. In the case of Pokemon Crystal, it should be:
+Copy your original dumped .cia files to `poke-cia/<build_name>.orig.cia`. Where `<build_name>` represents the names of the `.gbc` files that is output from your installed pret repository. In the case of Pokemon Crystal, it should be:
 
  `poke-cia/pokecrystal11.orig.cia`
+
+Finally place your obained `seeddb.bin` file inside your `poke-cia` directory.
 
 Now you can run `make cia` and be on your merry way!

@@ -18,9 +18,6 @@ clean_cia:
 distclean_cia: clean_cia
 	rm -rf $(vc_rom_dir) $(vc_dir)/seeddb.bin
 
-$(vc_dir)/seeddb.bin:
-	wget -O $@ 'https://github.com/ihaveamac/3DS-rom-tools/raw/master/seeddb/seeddb.bin'
-
 $(vc_rom_dir): $(vc_orig_cia) $(vc_dir)/seeddb.bin
 	mkdir -p $@
 	ctrtool --contents=$@/contents $@.orig.cia
