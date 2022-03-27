@@ -36,10 +36,10 @@ $(vc_rom_dir): $(vc_orig_cia) $(vc_dir)/seeddb.bin
 	rm -f $@/romfs/*.patch
 
 $(join $(addsuffix /romfs/, $(vc_rom_dir)), $(vc_patch)): $(vc_rom_dir) ./$(vc_patch)
-	cp ./$(notdir $@) $@
+	cp ./$(@F) $@
 	
 $(join $(addsuffix /romfs/rom/, $(vc_rom_dir)), $(vc_gbc)): $(vc_rom_dir) ./$(vc_gbc)
-	cp ./$(notdir $@) $(basename $@)
+	cp ./$(@F) $(basename $@)
 
 $(vc_game_cxi): $(vc_rom_dir) $(join $(addsuffix /romfs/, $(vc_rom_dir)), $(vc_patch)) $(join $(addsuffix /romfs/rom/, $(vc_rom_dir)), $(vc_gbc))
 	(cd $(basename $(basename $@))/; \
