@@ -4,7 +4,7 @@ vc_gold_name    := pokegold pokesilver
 vc_crystal_name := pokecrystal11
 
 # Modfiy the following line to match the Pret Repo you are building with
-vc_name       := $(vc_gold_name)
+vc_name       := $(vc_crystal_name)
 
 vc_cia        := $(addprefix $(vc_dir)/, $(addsuffix .cia, $(vc_name)))
 vc_rom_dir    := $(addprefix $(vc_dir)/, $(vc_name))

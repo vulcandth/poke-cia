@@ -17,14 +17,28 @@ Run `make` to build both `ctrtool` and `makerom`, and put them in your `$PATH`.
 Installation
 ------------
 
-It shouldn't be more complicated than the following pokecrystal example:
+To install, you need to clone the `poke-cia` repo into your Pret repository. The following is a pokecrystal example:
 
-```
+```shell
 cd <path to pokecrystal>
 git clone https://github.com/vulcandth/poke-cia poke-cia
 echo "-include poke-cia/cia.mk" >> Makefile
 ```
 
-Copy your original .cia file to `vc/<Title ID>.cia`. Where `<Title ID>` is the 16 digit number representing your base game's title ID. In the case of Pokemon Crystal, it should be `poke-cia/0004000000172800.cia`
+Next you will need to create your `poke-cia/cia-config.mk` file by using `poke-cia/cia-config.mk.template` as a base. 
+
+```shell
+cp ./poke-cia/cia-config.mk.template ./poke-cia/cia-config.mk
+```
+
+Modify your `/poke-cia/cia-config.mk` file using a text editor of your choice, adjusting the following line to match the pret repository your are using. In this example we are using `pret/pokecrystal`
+
+```makefile
+vc_name       := $(vc_crystal_name)
+```
+
+Copy your original dumped .cia files to `vc/<build_name>.orig.cia`. Where `<build_name>` represents the names of the `.gbc` files that is output from your installed pret repository. In the case of Pokemon Crystal, it should be:
+
+ `poke-cia/pokecrystal11.cia`
 
 Now you can run `make cia` and be on your merry way!
