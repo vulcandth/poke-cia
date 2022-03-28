@@ -73,21 +73,19 @@ endef
 $(foreach vc,${vc_name},$(eval $(call copy_rom_rule,${vc})))
 
 define make_cxi_rule
-$${vc_dir}/$(1).game.cxi: $${vc_dir}/$(1)/romfs/$(1).patch $${vc_dir}/$(1)/romfs/rom/$(1)
-	(cd $${vc_dir}/$(1)/; \
-	    makerom -f cxi -o ../../$$@ -rsf ../game.rsf \
-	            -exheader exheader.bin \
-	            -logo logo.lz \
-	            -plainrgn plain.bin \
-	            -code exefs/code.bin \
-	            -icon exefs/icon.bin \
-	            -banner exefs/banner.bin \
-	)
+$${vc_dir}/$(1).game.cxi: $${vc_dir}/game.rsf $${vc_dir}/$(1)/romfs/$(1).patch $${vc_dir}/$(1)/romfs/rom/$(1)
+	makerom -f cxi -o $$@ -rsf $$< \
+	        -exheader $${vc_dir}/$(1)/exheader.bin \
+	        -logo $${vc_dir}/$(1)/logo.lz \
+	        -plainrgn $${vc_dir}/$(1)/plain.bin \
+	        -code $${vc_dir}/$(1)/exefs/code.bin \
+	        -icon $${vc_dir}/$(1)/exefs/icon.bin \
+	        -banner $${vc_dir}/$(1)/exefs/banner.bin
 endef
 $(foreach vc,${vc_name},$(eval $(call make_cxi_rule,${vc})))
 
 ${vc_dir}/%.manual.cfa: ${vc_dir}/manual.rsf
-	makerom -f cfa -o $@ -rsf ${vc_dir}/manual.rsf
+	makerom -f cfa -o $@ -rsf $<
 
 ${vc_dir}/%.cia: ${vc_dir}/%.game.cxi ${vc_dir}/%.manual.cfa
 	makerom -f cia -o $@ -content $<:0:0 -content ${vc_dir}/$*.manual.cfa:1:1
