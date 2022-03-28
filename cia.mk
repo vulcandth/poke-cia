@@ -35,19 +35,20 @@ distclean_cia: clean_cia
 # Actual rules
 
 # TODO: relying on directory modification time is a bad idea!
+# Silence `ctrtool`, which is VERY verbose by default
 ${vc_dir}/%/: ${vc_dir}/%.orig.cia ${vc_dir}/seeddb.bin
 	mkdir -p $@
-	ctrtool --contents=$@contents $<
+	ctrtool --contents=$@contents $< >/dev/null
 	ctrtool --seeddb=${vc_dir}/seeddb.bin \
 	        --exheader=$@exheader.bin \
 	        --exefsdir=$@exefs \
 	        --romfsdir=$@romfs \
 	        --logo=$@logo.lz \
 	        --plainrgn=$@plain.bin \
-	        $@contents.0000.*
+	        $@contents.0000.* >/dev/null
 	ctrtool --seeddb=${vc_dir}/seeddb.bin \
 	        --romfsdir=$@manual \
-	        $@contents.0001.*
+	        $@contents.0001.* >/dev/null
 	rm -f $@contents.*
 	rm -f $@romfs/rom/*
 	rm -f $@romfs/*.patch
