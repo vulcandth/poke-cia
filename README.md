@@ -26,16 +26,26 @@ git clone https://github.com/vulcandth/poke-cia poke-cia
 echo "-include poke-cia/cia.mk" >> Makefile
 ```
 
-Next you will need to create your `poke-cia/cia-config.mk` file by using `poke-cia/cia-config.mk.template` as a base. 
+Next, you will need to create your `poke-cia/cia-config.mk` file by using `poke-cia/cia-config.mk.template` as a base. 
 
 ```shell
 cp ./poke-cia/cia-config.mk.template ./poke-cia/cia-config.mk
 ```
 
-Modify your `/poke-cia/cia-config.mk` file using a text editor of your choice, adjusting the following line to match the pret repository your are using. In this example we are using `pret/pokecrystal`
+Modify this new `/poke-cia/cia-config.mk` file using a text editor of your choice.
+Define `vc_name` to match the name of the ROM you want to build the `.cia` from, sans file extension.
+For example, for Pokémon Crystal, you can uncomment one of the example lines:
 
 ```makefile
-vc_name       := $(vc_crystal_name)
+vc_name       := pokecrystal11
+```
+
+(There should not be more than one uncommented line at a given time.)
+You can also build more than one `.cia` at a time!
+Simply write a space-separated list of names instead:
+
+```makefile
+vc_name       := redstar bluestar
 ```
 
 Copy your original dumped .cia files to `poke-cia/<build_name>.orig.cia`. Where `<build_name>` represents the names of the `.gbc` files that is output from your installed pret repository. In the case of Pokemon Crystal, it should be:

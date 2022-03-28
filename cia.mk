@@ -2,7 +2,10 @@
 
 # Include Configuration Settings
 vc_dir := poke-cia
--include $(vc_dir)/cia-config.mk
+include $(vc_dir)/cia-config.mk
+ifeq ($(strip ${vc_name}),)
+$(error Please set the `vc_name` variable in ${vc_dir}/cia-config.mk)
+endif
 
 .PHONY: cia
 cia: $(vc_cia)
