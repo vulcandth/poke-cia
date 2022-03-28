@@ -8,11 +8,11 @@ ifeq ($(strip ${vc_name}),)
 $(error Please set the `vc_name` variable in ${vc_dir}/cia-config.mk)
 endif
 
-vc_cias       := $(addprefix ${vc_dir}/, $(addsuffix .cia, ${vc_name}))
 vc_rom_dirs   := $(addprefix ${vc_dir}/, ${vc_name})
-vc_orig_cia   := $(addprefix ${vc_dir}/, $(addsuffix .orig.cia, ${vc_name}))
-vc_game_cxi   := $(addprefix ${vc_dir}/, $(addsuffix .game.cxi, ${vc_name}))
-vc_manual_cfa := $(addprefix ${vc_dir}/, $(addsuffix .manual.cfa, ${vc_name}))
+vc_cias       := $(addsuffix .cia, ${vc_rom_dirs})
+vc_orig_cia   := $(addsuffix .orig.cia, ${vc_rom_dirs})
+vc_game_cxi   := $(addsuffix .game.cxi, ${vc_rom_dirs})
+vc_manual_cfa := $(addsuffix .manual.cfa, ${vc_rom_dirs})
 
 
 # "Interface" rules
