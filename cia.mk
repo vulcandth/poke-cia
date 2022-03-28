@@ -8,55 +8,73 @@ ifeq ($(strip ${vc_name}),)
 $(error Please set the `vc_name` variable in ${vc_dir}/cia-config.mk)
 endif
 
-vc_cia        := $(addprefix ${vc_dir}/, $(addsuffix .cia, ${vc_name}))
-vc_rom_dir    := $(addprefix ${vc_dir}/, ${vc_name})
+vc_cias       := $(addprefix ${vc_dir}/, $(addsuffix .cia, ${vc_name}))
+vc_rom_dirs   := $(addprefix ${vc_dir}/, ${vc_name})
 vc_orig_cia   := $(addprefix ${vc_dir}/, $(addsuffix .orig.cia, ${vc_name}))
 vc_game_cxi   := $(addprefix ${vc_dir}/, $(addsuffix .game.cxi, ${vc_name}))
 vc_manual_cfa := $(addprefix ${vc_dir}/, $(addsuffix .manual.cfa, ${vc_name}))
-vc_patch      := $(addsuffix .patch, ${vc_name})
-vc_gbc        := $(addsuffix .gbc, ${vc_name})
 
+
+# "Interface" rules
 
 .PHONY: cia
-cia: ${vc_cia}
+cia: ${vc_cias}
 
 .PHONY: clean
 clean: clean_cia
 
 .PHONY: clean_cia
 clean_cia:
-	rm -f ${vc_cia} ${vc_game_cxi} ${vc_manual_cfa}
+	rm -f ${vc_cias} ${vc_game_cxi} ${vc_manual_cfa}
 
 .PHONY: distclean_cia
 distclean_cia: clean_cia
-	rm -rf ${vc_rom_dir} ${vc_dir}/seeddb.bin
+	rm -rf ${vc_rom_dirs} ${vc_dir}/seeddb.bin
 
-${vc_rom_dir}: ${vc_orig_cia} ${vc_dir}/seeddb.bin
+
+# Actual rules
+
+# TODO: relying on directory modification time is a bad idea!
+${vc_dir}/%/: ${vc_dir}/%.orig.cia ${vc_dir}/seeddb.bin
 	mkdir -p $@
-	ctrtool --contents=$@/contents $@.orig.cia
+	ctrtool --contents=$@contents $<
 	ctrtool --seeddb=${vc_dir}/seeddb.bin \
-	        --exheader=$@/exheader.bin \
-	        --exefsdir=$@/exefs \
-	        --romfsdir=$@/romfs \
-	        --logo=$@/logo.lz \
-	        --plainrgn=$@/plain.bin \
-	        $@/contents.0000.*
+	        --exheader=$@exheader.bin \
+	        --exefsdir=$@exefs \
+	        --romfsdir=$@romfs \
+	        --logo=$@logo.lz \
+	        --plainrgn=$@plain.bin \
+	        $@contents.0000.*
 	ctrtool --seeddb=${vc_dir}/seeddb.bin \
-	        --romfsdir=$@/manual \
-	        $@/contents.0001.*
-	rm -f $@/contents.*
-	rm -f $@/romfs/rom/*
-	rm -f $@/romfs/*.patch
+	        --romfsdir=$@manual \
+	        $@contents.0001.*
+	rm -f $@contents.*
+	rm -f $@romfs/rom/*
+	rm -f $@romfs/*.patch
 
-$(join $(addsuffix /romfs/, ${vc_rom_dir}), ${vc_patch}): ${vc_rom_dir} ./${vc_patch}
-	cp ./$(@F) $@
-	
-$(join $(addsuffix /romfs/rom/, ${vc_rom_dir}), ${vc_gbc}): ${vc_rom_dir} ./${vc_gbc}
-	cp ./$(@F) $(basename $@)
+# romfs files have the pattern appear twice in the path, which breaks pattern rules; we have to use `eval` instead
+# Careful that the contents of the `define`s are expanded twice:
+# 1. In the `call` function, and
+# 2. In the `eval` function.
 
-${vc_game_cxi}: ${vc_rom_dir} $(join $(addsuffix /romfs/, ${vc_rom_dir}), ${vc_patch}) $(join $(addsuffix /romfs/rom/, ${vc_rom_dir}), ${vc_gbc})
-	(cd $(basename $(basename $@))/; \
-	    makerom -f cxi -o ../../$(basename $@).cxi -rsf ../game.rsf \
+define copy_patch_rule
+$${vc_dir}/$(1)/romfs/$(1).patch: $(1).patch | ${vc_dir}/$(1)/
+	mkdir -p $${@D}
+	cp -T $$< $$@
+endef
+$(foreach vc,${vc_name},$(eval $(call copy_patch_rule,${vc})))
+
+define copy_rom_rule
+$${vc_dir}/$(1)/romfs/rom/$(1): $(1).gbc | ${vc_dir}/$(1)/
+	mkdir -p $${@D}
+	cp -T $$< $$@
+endef
+$(foreach vc,${vc_name},$(eval $(call copy_rom_rule,${vc})))
+
+define make_cxi_rule
+$${vc_dir}/$(1).game.cxi: $${vc_dir}/$(1)/romfs/$(1).patch $${vc_dir}/$(1)/romfs/rom/$(1)
+	(cd $${vc_dir}/$(1)/; \
+	    makerom -f cxi -o ../../$$@ -rsf ../game.rsf \
 	            -exheader exheader.bin \
 	            -logo logo.lz \
 	            -plainrgn plain.bin \
@@ -64,9 +82,11 @@ ${vc_game_cxi}: ${vc_rom_dir} $(join $(addsuffix /romfs/, ${vc_rom_dir}), ${vc_p
 	            -icon exefs/icon.bin \
 	            -banner exefs/banner.bin \
 	)
+endef
+$(foreach vc,${vc_name},$(eval $(call make_cxi_rule,${vc})))
 
-${vc_manual_cfa}: ${vc_dir}/manual.rsf
+${vc_dir}/%.manual.cfa: ${vc_dir}/manual.rsf
 	makerom -f cfa -o $@ -rsf ${vc_dir}/manual.rsf
 
-${vc_cia}: ${vc_game_cxi} ${vc_manual_cfa}
-	makerom -f cia -o $@ -content $(basename $@).game.cxi:0:0 -content $(basename $@).manual.cfa:1:1
+${vc_dir}/%.cia: ${vc_dir}/%.game.cxi ${vc_dir}/%.manual.cfa
+	makerom -f cia -o $@ -content $<:0:0 -content ${vc_dir}/$*.manual.cfa:1:1
