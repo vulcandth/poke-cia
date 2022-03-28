@@ -1,6 +1,8 @@
-*.bin
-*.cia
-*.cxi
-*.cfa
-cia-config.mk
-rom/
+/seeddb.bin
+/*.cia
+/*.cxi
+/*.cfa
+# The "configured" file
+/cia-config.mk
+# Directories in which the CIAs are extracted
+/*/
