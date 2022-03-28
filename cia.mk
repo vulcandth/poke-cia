@@ -1,11 +1,21 @@
 ### Virtual Console repacking stuff
 
-# Include Configuration Settings
 vc_dir := poke-cia
+
+# Include Configuration Settings
 include $(vc_dir)/cia-config.mk
 ifeq ($(strip ${vc_name}),)
 $(error Please set the `vc_name` variable in ${vc_dir}/cia-config.mk)
 endif
+
+vc_cia        := $(addprefix $(vc_dir)/, $(addsuffix .cia, $(vc_name)))
+vc_rom_dir    := $(addprefix $(vc_dir)/, $(vc_name))
+vc_orig_cia   := $(addprefix $(vc_dir)/, $(addsuffix .orig.cia, $(vc_name)))
+vc_game_cxi   := $(addprefix $(vc_dir)/, $(addsuffix .game.cxi, $(vc_name)))
+vc_manual_cfa := $(addprefix $(vc_dir)/, $(addsuffix .manual.cfa, $(vc_name)))
+vc_patch      := $(addsuffix .patch, $(vc_name))
+vc_gbc        := $(addsuffix .gbc, $(vc_name))
+
 
 .PHONY: cia
 cia: $(vc_cia)

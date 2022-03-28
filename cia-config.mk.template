@@ -4,12 +4,3 @@
 #vc_name       := pokegold pokesilver
 #vc_name       := pokecrystal11
 #vc_name       := my_awesome_hack
-
-vc_cia        := $(addprefix $(vc_dir)/, $(addsuffix .cia, $(vc_name)))
-vc_rom_dir    := $(addprefix $(vc_dir)/, $(vc_name))
-vc_orig_cia   := $(addprefix $(vc_dir)/, $(addsuffix .orig.cia, $(vc_name)))
-vc_game_cxi   := $(addprefix $(vc_dir)/, $(addsuffix .game.cxi, $(vc_name)))
-vc_manual_cfa := $(addprefix $(vc_dir)/, $(addsuffix .manual.cfa, $(vc_name)))
-vc_patch      := $(addsuffix .patch, $(vc_name))
-vc_gbc        := $(addsuffix .gbc, $(vc_name))
-
