@@ -1,5 +1,11 @@
 ### Virtual Console repacking stuff
 
+## "Option" variables, intended to be overridden from the command line
+# (Or from `config.mk` if you want to persist those)
+
+# Clear this to let ctrtool speak its mind. It is quite talkative.
+VERBOSE_CTRTOOL := >/dev/null
+
 # Include Configuration Settings
 include config.mk
 ifeq ($(strip ${roms_names}),)
@@ -51,11 +57,11 @@ distclean: clean
 	        --romfsdir=$@romfs \
 	        --logo=$@logo.lz \
 	        --plainrgn=$@plain.bin \
-	        $< >/dev/null
+	        $< ${VERBOSE_CTRTOOL}
 	ctrtool --cidx 1 \
 	        --seeddb=seeddb.bin \
 	        --romfsdir=$@manual \
-	        $< >/dev/null
+	        $< ${VERBOSE_CTRTOOL}
 	rm -f $@romfs/rom/*
 	rm -f $@romfs/*.patch
 
