@@ -9,11 +9,14 @@ ifeq ($(strip ${repo_path}),)
 $(error Please set the `repo_path` variable in config.mk)
 endif
 
+# Convenience lists
 rom_dirs    := ${roms_names}
-cias        := $(addsuffix .cia, ${rom_dirs})
-orig_cias   := $(addsuffix .orig.cia, ${rom_dirs})
-game_cxis   := $(addsuffix .game.cxi, ${rom_dirs})
-manual_cfas := $(addsuffix .manual.cfa, ${rom_dirs})
+cias        := $(addsuffix .cia, ${roms_names})
+orig_cias   := $(addsuffix .orig.cia, ${roms_names})
+game_cxis   := $(addsuffix .game.cxi, ${roms_names})
+manual_cfas := $(addsuffix .manual.cfa, ${roms_names})
+# List of files upon which a CXI file depends
+cxi_deps    = exheader.bin logo.lz plain.bin exefs/banner.bin exefs/code.bin $(shell [ -e romfs ] && find romfs -type f)
 
 
 # "Interface" rules
@@ -32,11 +35,15 @@ distclean: clean
 
 # Actual rules
 
-# TODO: relying on directory modification time is a bad idea!
-# Silence `ctrtool`, which is VERY verbose by default
+# Rules that update the romfs files must run after this (since it extracts all original files),
+# so they are given an order-only dep on the directory (`%/` here).
+# Do NOT depend on it directly, as directory modification times update in unintuitive ways!
+#
 # This extracts the original CIA's contents, but deletes the original ROM and patch
-%/: %.orig.cia seeddb.bin
-	mkdir -p $@
+#
+# Silence `ctrtool`, which is VERY verbose by default (sadly that may also suppress debug info)
+%/ $(addprefix %/,${cxi_deps}): %.orig.cia seeddb.bin
+	@mkdir -p $*
 	ctrtool --cidx 0 \
 	        --seeddb=seeddb.bin \
 	        --exheader=$@exheader.bin \
