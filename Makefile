@@ -86,7 +86,7 @@ $(foreach rom,${roms_names},$(eval $(call copy_rom_rule,${rom})))
 
 # This rule must be run in the "extracted" directory for it to find all the files
 define make_cxi_rule
-$(1).game.cxi: game.rsf $(1)/romfs/$(1).patch $(1)/romfs/rom/$(1)
+$(1).game.cxi: game.rsf $(1)/romfs/$(1).patch $(1)/romfs/rom/$(1) $(addprefix $(1)/,${cxi_deps})
 	env -C $(1)/ \
 	    makerom -f cxi -o ../$$@ -rsf ../$$< \
 	            -exheader exheader.bin \
