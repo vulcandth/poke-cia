@@ -9,25 +9,25 @@ ifeq ($(strip ${repo_path}),)
 $(error Please set the `repo_path` variable in config.mk)
 endif
 
-vc_rom_dirs   := ${roms_names}
-vc_cias       := $(addsuffix .cia, ${vc_rom_dirs})
-vc_orig_cia   := $(addsuffix .orig.cia, ${vc_rom_dirs})
-vc_game_cxi   := $(addsuffix .game.cxi, ${vc_rom_dirs})
-vc_manual_cfa := $(addsuffix .manual.cfa, ${vc_rom_dirs})
+rom_dirs    := ${roms_names}
+cias        := $(addsuffix .cia, ${rom_dirs})
+orig_cias   := $(addsuffix .orig.cia, ${rom_dirs})
+game_cxis   := $(addsuffix .game.cxi, ${rom_dirs})
+manual_cfas := $(addsuffix .manual.cfa, ${rom_dirs})
 
 
 # "Interface" rules
 
 .PHONY: cia
-cia: ${vc_cias}
+cia: ${cias}
 
 .PHONY: clean
 clean:
-	rm -f ${vc_cias} ${vc_game_cxi} ${vc_manual_cfa}
+	rm -f ${cias} ${game_cxis} ${manual_cfas}
 
 .PHONY: distclean
 distclean: clean
-	rm -rf ${vc_rom_dirs} seeddb.bin
+	rm -rf ${rom_dirs} seeddb.bin
 
 
 # Actual rules
@@ -62,14 +62,14 @@ $(1)/romfs/$(1).patch: $${repo_path}/$(1).patch | $(1)/
 	mkdir -p $${@D}
 	cp -T $$< $$@
 endef
-$(foreach vc,${roms_names},$(eval $(call copy_patch_rule,${vc})))
+$(foreach rom,${roms_names},$(eval $(call copy_patch_rule,${rom})))
 
 define copy_rom_rule
 $(1)/romfs/rom/$(1): $${repo_path}/$(1).gbc | $(1)/
 	mkdir -p $${@D}
 	cp -T $$< $$@
 endef
-$(foreach vc,${roms_names},$(eval $(call copy_rom_rule,${vc})))
+$(foreach rom,${roms_names},$(eval $(call copy_rom_rule,${rom})))
 
 # This rule must be run in the "extracted" directory for it to find all the files
 define make_cxi_rule
@@ -83,7 +83,7 @@ $(1).game.cxi: game.rsf $(1)/romfs/$(1).patch $(1)/romfs/rom/$(1)
 	            -icon exefs/icon.bin \
 	            -banner exefs/banner.bin
 endef
-$(foreach vc,${roms_names},$(eval $(call make_cxi_rule,${vc})))
+$(foreach rom,${roms_names},$(eval $(call make_cxi_rule,${rom})))
 
 %.manual.cfa: manual.rsf
 	makerom -f cfa -o $@ -rsf $<
