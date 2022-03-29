@@ -71,23 +71,27 @@ $(1)/romfs/rom/$(1): $${repo_path}/$(1).gbc | $(1)/
 endef
 $(foreach vc,${vc_name},$(eval $(call copy_rom_rule,${vc})))
 
+# This rule must be run in the "extracted" directory for it to find all the files
 define make_cxi_rule
 $(1).game.cxi: game.rsf $(1)/romfs/$(1).patch $(1)/romfs/rom/$(1)
-	makerom -f cxi -o $$@ -rsf $$< \
-	        -exheader $(1)/exheader.bin \
-	        -logo $(1)/logo.lz \
-	        -plainrgn $(1)/plain.bin \
-	        -code $(1)/exefs/code.bin \
-	        -icon $(1)/exefs/icon.bin \
-	        -banner $(1)/exefs/banner.bin
+	env -C $(1)/ \
+	    makerom -f cxi -o ../$$@ -rsf ../$$< \
+	            -exheader exheader.bin \
+	            -logo logo.lz \
+	            -plainrgn plain.bin \
+	            -code exefs/code.bin \
+	            -icon exefs/icon.bin \
+	            -banner exefs/banner.bin
 endef
 $(foreach vc,${vc_name},$(eval $(call make_cxi_rule,${vc})))
 
 %.manual.cfa: manual.rsf
 	makerom -f cfa -o $@ -rsf $<
 
+# This must also be run in the "extracted" directory
 %.cia: %.game.cxi %.manual.cfa
-	makerom -f cia -o $@ -content $<:0:0 -content $*.manual.cfa:1:1
+	env -C $* \
+	    makerom -f cia -o $@ -content ../$<:0:0 -content ../$*.manual.cfa:1:1
 
 # Catch-all rules for files originating from the source repo
 
