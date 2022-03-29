@@ -43,7 +43,7 @@ clean:
 
 .PHONY: distclean
 distclean: clean
-	rm -rf ${rom_dirs} seeddb.bin
+	rm -rf ${rom_dirs}
 
 
 # Actual rules
