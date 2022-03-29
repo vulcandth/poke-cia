@@ -1,6 +1,6 @@
-# CIA building extension for Pret Pokemon Gen I / II Repos
+# CIA building extension for Pret Pokémon Gen I / II Repos
 
-This repo provides a simple extension that integrates the build of a Virtual Console .cia file to the pret pokemon Gen I / II repos, to ease the building of a VC .cia for your ROM Hack down to something as simple as typing `make`.
+This repo provides a simple extension that repackages a Nintendo 3DS Virtual Console (VC) `.cia` file using the built `.gbc`(s) and `.patch`(s) generated from the Pret Pokémon Gen I / II repos. This will ease the building of a VC `.cia` for your ROM Hack down to something as simple as typing `make`.
 
 ## Requirements
 
@@ -52,7 +52,7 @@ Modify this new `config.mk` file using a text editor of your choice.
 
   (Relative paths must be relative to the `poke-cia` directory.)
 
-Copy your original dumped .cia files to `<build_name>.orig.cia`, where `<build_name>` is one of the names you put in `roms_names`.
+Copy and rename your original dumped .cia files to `<build_name>.orig.cia`, where `<build_name>` is one of the names you put in `roms_names`.
 For example, for Pokémon Crystal, it should be `pokecrystal11.orig.cia`.
 
 Finally, place your obained `seeddb.bin` file inside your `poke-cia` directory.

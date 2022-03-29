@@ -58,7 +58,8 @@ distclean: clean
 # so they are given an order-only dep on the directory (`%/` here).
 # Do NOT depend on it directly, as directory modification times update in unintuitive ways!
 #
-# This extracts the original CIA's contents, but deletes the original ROM and patch
+# This extracts the original CIA's contents, deletes the original ROM, and deletes all patch files. 
+# (There are extra, un-needed patch files left in by the VC developers for the other games.)
 #
 # Silence `ctrtool`, which is VERY verbose by default (sadly that may also suppress debug info)
 %/ $(addprefix %/,${cxi_deps}): %.orig.cia seeddb.bin
