@@ -1,13 +1,19 @@
 # CIA building extension for Pret Pokemon Gen I / II Repos
 
-This repo provides a simple extension that integrates the build of a Virtual Console .cia file to the pret pokemon Gen I / II repos, to ease the building of a VC .cia for your ROM Hack down to something as simple as `make cia`.
+This repo provides a simple extension that integrates the build of a Virtual Console .cia file to the pret pokemon Gen I / II repos, to ease the building of a VC .cia for your ROM Hack down to something as simple as typing `make`.
 
 ## Requirements
 
-* A recent [pokecrystal](https://github.com/pret/pokecrystal), [pokegold](https://github.com/pret/pokegold), [pokered](https://github.com/pret/pokered), or [pokeyellow](https://github.com/pret/pokeyellow) installation, that supports building Virtual Console patches.
-* An original (encrypted or decrypted) `.cia` file.
+* The hack's source repository. It must be based on a recent enough version of the original disassembly, so that it supports building Virtual Console patches:
+  **Disassembly**                                    | **Must have been updated to this commit or later**
+  ---------------------------------------------------|-------------------------------------------------------
+  [pokered](https://github.com/pret/pokered)         | [fe8d3c51a4056f0dd61dbef332ad9e714b82089a](https://github.com/pret/pokered/commit/fe8d3c51a4056f0dd61dbef332ad9e714b82089a)
+  [pokeyellow](https://github.com/pret/pokeyellow)   | [fbaa5c9d4b48c000a52860a8392fc423c4e312f9](https://github.com/pret/pokeyellow/commit/fbaa5c9d4b48c000a52860a8392fc423c4e312f9)
+  [pokegold](https://github.com/pret/pokegold)       | [3d58fb95569be74c6c229118a425fa22628f1dc3](https://github.com/pret/pokegold/commit/3d58fb95569be74c6c229118a425fa22628f1dc3)
+  [pokecrystal](https://github.com/pret/pokecrystal) | [31c3c94d64e1ac1e40c95acfda7de8b99b4f302b](https://github.com/pret/pokecrystal/commit/31c3c94d64e1ac1e40c95acfda7de8b99b4f302b)
+* An original (encrypted or decrypted) `.cia` file for each version that you want to produce—see further below.
 * [ctrtool and makerom](https://github.com/3DSGuy/Project_CTR) v1.0.0 or later.
-* Obtain `seeddb.bin`, here is a link: [seeddb.bin](https://github.com/ihaveamac/3DS-rom-tools/raw/master/seeddb/seeddb.bin)
+* `seeddb.bin`. It can be obtained [from this link](https://github.com/ihaveamac/3DS-rom-tools/raw/master/seeddb/seeddb.bin).
 
 Obtaining the original file is outside of the scope of this document. It can be legally obtained by extracting it from your console through tools such as GodMode9 and/or FunkyCIA.
 
