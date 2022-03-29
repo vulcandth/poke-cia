@@ -6,7 +6,13 @@
 # Clear this to let ctrtool speak its mind. It is quite talkative.
 VERBOSE_CTRTOOL := >/dev/null
 
+# Paths to the executables (mind that lack of slashes means PATH will be searched instead!)
+CTRTOOL := ctrtool
+MAKEROM := makerom
+
+
 # Include Configuration Settings
+
 include config.mk
 ifeq ($(strip ${roms_names}),)
 $(error Please set the `roms_names` variable in config.mk)
@@ -57,18 +63,18 @@ distclean: clean
 # Silence `ctrtool`, which is VERY verbose by default (sadly that may also suppress debug info)
 %/ $(addprefix %/,${cxi_deps}): %.orig.cia seeddb.bin
 	@mkdir -p $*
-	ctrtool --cidx 0 \
-	        --seeddb=seeddb.bin \
-	        --exheader=$@exheader.bin \
-	        --exefsdir=$@exefs \
-	        --romfsdir=$@romfs \
-	        --logo=$@logo.lz \
-	        --plainrgn=$@plain.bin \
-	        $< ${VERBOSE_CTRTOOL}
-	ctrtool --cidx 1 \
-	        --seeddb=seeddb.bin \
-	        --romfsdir=$@manual \
-	        $< ${VERBOSE_CTRTOOL}
+	${CTRTOOL} --cidx 0 \
+	           --seeddb=seeddb.bin \
+	           --exheader=$@exheader.bin \
+	           --exefsdir=$@exefs \
+	           --romfsdir=$@romfs \
+	           --logo=$@logo.lz \
+	           --plainrgn=$@plain.bin \
+	           $< ${VERBOSE_CTRTOOL}
+	${CTRTOOL} --cidx 1 \
+	           --seeddb=seeddb.bin \
+	           --romfsdir=$@manual \
+	           $< ${VERBOSE_CTRTOOL}
 	rm -f $@romfs/rom/*
 	rm -f $@romfs/*.patch
 
@@ -95,23 +101,23 @@ $(foreach rom,${roms_names},$(eval $(call copy_rom_rule,${rom})))
 define make_cxi_rule
 $(1).game.cxi: game.rsf $(1)/romfs/$(1).patch $(1)/romfs/rom/$(1) $(addprefix $(1)/,${cxi_deps})
 	env -C $(1)/ \
-	    makerom -f cxi -o ../$$@ -rsf ../$$< \
-	            -exheader exheader.bin \
-	            -logo logo.lz \
-	            -plainrgn plain.bin \
-	            -code exefs/code.bin \
-	            -icon exefs/icon.bin \
-	            -banner exefs/banner.bin
+	    ${MAKEROM} -f cxi -o ../$$@ -rsf ../$$< \
+	               -exheader exheader.bin \
+	               -logo logo.lz \
+	               -plainrgn plain.bin \
+	               -code exefs/code.bin \
+	               -icon exefs/icon.bin \
+	               -banner exefs/banner.bin
 endef
 $(foreach rom,${roms_names},$(eval $(call make_cxi_rule,${rom})))
 
 %.manual.cfa: manual.rsf
-	makerom -f cfa -o $@ -rsf $<
+	${MAKEROM} -f cfa -o $@ -rsf $<
 
 # This must also be run in the "extracted" directory
 %.cia: %.game.cxi %.manual.cfa
 	env -C $* \
-	    makerom -f cia -o $@ -content ../$<:0:0 -content ../$*.manual.cfa:1:1
+	    ${MAKEROM} -f cia -o $@ -content ../$<:0:0 -content ../$*.manual.cfa:1:1
 
 # Catch-all rules for files originating from the source repo
 

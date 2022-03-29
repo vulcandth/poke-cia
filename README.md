@@ -11,8 +11,6 @@ This repo provides a simple extension that integrates the build of a Virtual Con
 
 Obtaining the original file is outside of the scope of this document. It can be legally obtained by extracting it from your console through tools such as GodMode9 and/or FunkyCIA.
 
-Run `make` to build both `ctrtool` and `makerom`, and put them in your `$PATH`.
-
 ## Installation
 
 First, [clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository), and `cd` into it.
@@ -20,7 +18,7 @@ First, [clone this repository](https://docs.github.com/en/repositories/creating-
 Next, you will need to create your `config.mk` file by using `config.mk.template` as a base. 
 
 ```console
-% cp config.mk.template config.mk
+$ cp config.mk.template config.mk
 ```
 
 Modify this new `config.mk` file using a text editor of your choice.
@@ -55,3 +53,10 @@ Finally, place your obained `seeddb.bin` file inside your `poke-cia` directory.
 
 Now, you can run `make` and be on your merry way!
 The new `.cia` files will be generated in the same directory.
+Both `makerom` and `ctrtool` must either be in your PATH, or you can pass the paths as arguments; for example:
+
+```console
+$ make MAKEROM=../ctrtool-v1.0.1/makerom/makerom CTRTOOL=../ctrtool-v1.0.1/ctrtool/bin/ctrtool
+```
+
+It is also possible to specify these variables in `config.mk` instead, which saves the trouble of re-typing them every time.
