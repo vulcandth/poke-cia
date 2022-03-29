@@ -34,20 +34,21 @@ distclean: clean
 
 # TODO: relying on directory modification time is a bad idea!
 # Silence `ctrtool`, which is VERY verbose by default
+# This extracts the original CIA's contents, but deletes the original ROM and patch
 %/: %.orig.cia seeddb.bin
 	mkdir -p $@
-	ctrtool --contents=$@contents $< >/dev/null
-	ctrtool --seeddb=seeddb.bin \
+	ctrtool --cidx 0 \
+	        --seeddb=seeddb.bin \
 	        --exheader=$@exheader.bin \
 	        --exefsdir=$@exefs \
 	        --romfsdir=$@romfs \
 	        --logo=$@logo.lz \
 	        --plainrgn=$@plain.bin \
-	        $@contents.0000.* >/dev/null
-	ctrtool --seeddb=seeddb.bin \
+	        $< >/dev/null
+	ctrtool --cidx 1 \
+	        --seeddb=seeddb.bin \
 	        --romfsdir=$@manual \
-	        $@contents.0001.* >/dev/null
-	rm -f $@contents.*
+	        $< >/dev/null
 	rm -f $@romfs/rom/*
 	rm -f $@romfs/*.patch
 

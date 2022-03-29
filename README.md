@@ -6,7 +6,7 @@ This repo provides a simple extension that integrates the build of a Virtual Con
 
 * A recent [pokecrystal](https://github.com/pret/pokecrystal), [pokegold](https://github.com/pret/pokegold), [pokered](https://github.com/pret/pokered), or [pokeyellow](https://github.com/pret/pokeyellow) installation, that supports building Virtual Console patches.
 * An original (encrypted or decrypted) `.cia` file.
-* [ctrtool and makerom](https://github.com/profi200/Project_CTR) (Only master has been tested)
+* [ctrtool and makerom](https://github.com/3DSGuy/Project_CTR) v1.0.0 or later.
 * Obtain `seeddb.bin`, here is a link: [seeddb.bin](https://github.com/ihaveamac/3DS-rom-tools/raw/master/seeddb/seeddb.bin)
 
 Obtaining the original file is outside of the scope of this document. It can be legally obtained by extracting it from your console through tools such as GodMode9 and/or FunkyCIA.
