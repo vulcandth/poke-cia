@@ -27,8 +27,15 @@ cxi_deps    = exheader.bin logo.lz plain.bin exefs/banner.bin exefs/code.bin $(s
 
 # "Interface" rules
 
+# Build the CIAs.
 .PHONY: cia
 cia: ${cias}
+
+# Extract the `.orig.cia`s, but don't build the CIAs.
+# Does not re-extract if the directories if they are already present; use `distclean` for that.
+.PHONY: extract
+# Ok to depend on the directories, as this target is phony thus never up to date anyway
+extract: $(addsuffix /,${rom_dirs})
 
 .PHONY: clean
 clean:
