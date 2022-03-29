@@ -1,14 +1,15 @@
 ### Virtual Console repacking stuff
 
-vc_dir := poke-cia
-
 # Include Configuration Settings
-include ${vc_dir}/cia-config.mk
+include config.mk
 ifeq ($(strip ${vc_name}),)
-$(error Please set the `vc_name` variable in ${vc_dir}/cia-config.mk)
+$(error Please set the `vc_name` variable in config.mk)
+endif
+ifeq ($(strip ${repo_path}),)
+$(error Please set the `repo_path` variable in config.mk)
 endif
 
-vc_rom_dirs   := $(addprefix ${vc_dir}/, ${vc_name})
+vc_rom_dirs   := ${vc_name}
 vc_cias       := $(addsuffix .cia, ${vc_rom_dirs})
 vc_orig_cia   := $(addsuffix .orig.cia, ${vc_rom_dirs})
 vc_game_cxi   := $(addsuffix .game.cxi, ${vc_rom_dirs})
@@ -21,32 +22,29 @@ vc_manual_cfa := $(addsuffix .manual.cfa, ${vc_rom_dirs})
 cia: ${vc_cias}
 
 .PHONY: clean
-clean: clean_cia
-
-.PHONY: clean_cia
-clean_cia:
+clean:
 	rm -f ${vc_cias} ${vc_game_cxi} ${vc_manual_cfa}
 
-.PHONY: distclean_cia
-distclean_cia: clean_cia
-	rm -rf ${vc_rom_dirs} ${vc_dir}/seeddb.bin
+.PHONY: distclean
+distclean: clean
+	rm -rf ${vc_rom_dirs} seeddb.bin
 
 
 # Actual rules
 
 # TODO: relying on directory modification time is a bad idea!
 # Silence `ctrtool`, which is VERY verbose by default
-${vc_dir}/%/: ${vc_dir}/%.orig.cia ${vc_dir}/seeddb.bin
+%/: %.orig.cia seeddb.bin
 	mkdir -p $@
 	ctrtool --contents=$@contents $< >/dev/null
-	ctrtool --seeddb=${vc_dir}/seeddb.bin \
+	ctrtool --seeddb=seeddb.bin \
 	        --exheader=$@exheader.bin \
 	        --exefsdir=$@exefs \
 	        --romfsdir=$@romfs \
 	        --logo=$@logo.lz \
 	        --plainrgn=$@plain.bin \
 	        $@contents.0000.* >/dev/null
-	ctrtool --seeddb=${vc_dir}/seeddb.bin \
+	ctrtool --seeddb=seeddb.bin \
 	        --romfsdir=$@manual \
 	        $@contents.0001.* >/dev/null
 	rm -f $@contents.*
@@ -59,33 +57,38 @@ ${vc_dir}/%/: ${vc_dir}/%.orig.cia ${vc_dir}/seeddb.bin
 # 2. In the `eval` function.
 
 define copy_patch_rule
-$${vc_dir}/$(1)/romfs/$(1).patch: $(1).patch | ${vc_dir}/$(1)/
+$(1)/romfs/$(1).patch: $${repo_path}/$(1).patch | $(1)/
 	mkdir -p $${@D}
 	cp -T $$< $$@
 endef
 $(foreach vc,${vc_name},$(eval $(call copy_patch_rule,${vc})))
 
 define copy_rom_rule
-$${vc_dir}/$(1)/romfs/rom/$(1): $(1).gbc | ${vc_dir}/$(1)/
+$(1)/romfs/rom/$(1): $${repo_path}/$(1).gbc | $(1)/
 	mkdir -p $${@D}
 	cp -T $$< $$@
 endef
 $(foreach vc,${vc_name},$(eval $(call copy_rom_rule,${vc})))
 
 define make_cxi_rule
-$${vc_dir}/$(1).game.cxi: $${vc_dir}/game.rsf $${vc_dir}/$(1)/romfs/$(1).patch $${vc_dir}/$(1)/romfs/rom/$(1)
+$(1).game.cxi: game.rsf $(1)/romfs/$(1).patch $(1)/romfs/rom/$(1)
 	makerom -f cxi -o $$@ -rsf $$< \
-	        -exheader $${vc_dir}/$(1)/exheader.bin \
-	        -logo $${vc_dir}/$(1)/logo.lz \
-	        -plainrgn $${vc_dir}/$(1)/plain.bin \
-	        -code $${vc_dir}/$(1)/exefs/code.bin \
-	        -icon $${vc_dir}/$(1)/exefs/icon.bin \
-	        -banner $${vc_dir}/$(1)/exefs/banner.bin
+	        -exheader $(1)/exheader.bin \
+	        -logo $(1)/logo.lz \
+	        -plainrgn $(1)/plain.bin \
+	        -code $(1)/exefs/code.bin \
+	        -icon $(1)/exefs/icon.bin \
+	        -banner $(1)/exefs/banner.bin
 endef
 $(foreach vc,${vc_name},$(eval $(call make_cxi_rule,${vc})))
 
-${vc_dir}/%.manual.cfa: ${vc_dir}/manual.rsf
+%.manual.cfa: manual.rsf
 	makerom -f cfa -o $@ -rsf $<
 
-${vc_dir}/%.cia: ${vc_dir}/%.game.cxi ${vc_dir}/%.manual.cfa
-	makerom -f cia -o $@ -content $<:0:0 -content ${vc_dir}/$*.manual.cfa:1:1
+%.cia: %.game.cxi %.manual.cfa
+	makerom -f cia -o $@ -content $<:0:0 -content $*.manual.cfa:1:1
+
+# Catch-all rules for files originating from the source repo
+
+${repo_path}/%:
+	make -C ${@D} ${@F}

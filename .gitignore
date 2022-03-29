@@ -3,6 +3,6 @@
 /*.cxi
 /*.cfa
 # The "configured" file
-/cia-config.mk
+/config.mk
 # Directories in which the CIAs are extracted
 /*/
