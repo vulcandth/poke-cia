@@ -42,7 +42,7 @@ Modify this new `config.mk` file using a text editor of your choice.
   Simply write a space-separated list of names instead:
 
   ```makefile
-  rom_names := redstar bluestar
+  rom_names := magenta turquoise
   ```
 
 - Still in that same file, you must also set the `repo_path` variable to point to the repository containing the ROMs, for example:
