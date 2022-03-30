@@ -16,7 +16,7 @@ This repo provides a simple extension that repackages a Nintendo 3DS Virtual Con
 * [makerom](https://github.com/3DSGuy/Project_CTR) makerom v0.18 or later.
 * `seeddb.bin`. It can be obtained [from this link](https://github.com/ihaveamac/3DS-rom-tools/raw/master/seeddb/seeddb.bin).
 
-Obtaining the original file is outside of the scope of this document. It can be legally obtained by extracting it from your console through tools such as GodMode9 and/or FunkyCIA.
+Obtaining the **original** `.cia` file dump is outside of the scope of this document. It can be legally obtained by extracting it from your console through tools such as GodMode9 and/or FunkyCIA.
 
 ## Installation
 
