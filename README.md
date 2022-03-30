@@ -12,7 +12,8 @@ This repo provides a simple extension that repackages a Nintendo 3DS Virtual Con
   [pokegold](https://github.com/pret/pokegold)       | [3d58fb95569be74c6c229118a425fa22628f1dc3](https://github.com/pret/pokegold/commit/3d58fb95569be74c6c229118a425fa22628f1dc3)
   [pokecrystal](https://github.com/pret/pokecrystal) | [31c3c94d64e1ac1e40c95acfda7de8b99b4f302b](https://github.com/pret/pokecrystal/commit/31c3c94d64e1ac1e40c95acfda7de8b99b4f302b)
 * An original (encrypted or decrypted) `.cia` file for each version that you want to produce—see further below.
-* [ctrtool and makerom](https://github.com/3DSGuy/Project_CTR) v1.0.0 or later.
+* [ctrtool](https://github.com/3DSGuy/Project_CTR) ctrtool v1.0.3 or later.
+* [makerom](https://github.com/3DSGuy/Project_CTR) makerom v0.18 or later.
 * `seeddb.bin`. It can be obtained [from this link](https://github.com/ihaveamac/3DS-rom-tools/raw/master/seeddb/seeddb.bin).
 
 Obtaining the original file is outside of the scope of this document. It can be legally obtained by extracting it from your console through tools such as GodMode9 and/or FunkyCIA.
@@ -68,3 +69,10 @@ $ make MAKEROM=../ctrtool-v1.0.1/makerom/makerom CTRTOOL=../ctrtool-v1.0.1/ctrto
 ```
 
 It is also possible to specify these variables in `config.mk` instead, which saves the trouble of re-typing them every time.
+
+## Special Credits
+
+I would like to give special credits to the following:
+* @mid-kid originally came up with the idea of this tool and this extension is developed based on his orig repo.
+* @ISSOtm spent a lot of time helping to restructure the extension, and getting it ready for release.
+* @jakcron went out of their way to download not only one, but two other repos (this and pret) to help resolve a bug in ctrtool. 
