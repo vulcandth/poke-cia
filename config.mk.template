@@ -1,0 +1,11 @@
+# Uncomment one of the following lines depending on your repo, or write your own!
+#rom_names := pokered pokeblue
+#rom_names := pokeyellow
+#rom_names := pokegold pokesilver
+#rom_names := pokecrystal11
+#rom_names := my_awesome_hack
+
+# Write the path to the repo here. Here are some examples:
+#repo_path  := ../pokered
+#repo_path  := /drives/c/Users/ISSOtm/Documents/pokecrystal
+#repo_path  := /d/vulcandth/pkmn/pokedarkgold
