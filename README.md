@@ -1,16 +1,16 @@
-# CIA building extension for Pret Pokémon Gen I / II Repos
+# CIA building extension for pret Pokémon Gen I / II Repos
 
-This repo provides a simple extension that repackages a Nintendo 3DS Virtual Console (VC) `.cia` file using the built `.gbc`(s) and `.patch`(s) generated from the Pret Pokémon Gen I / II repos. This will ease the building of a VC `.cia` for your ROM Hack down to something as simple as typing `make`.
+This repo provides a simple extension that repackages a Nintendo 3DS Virtual Console (VC) `.cia` file using the built `.gbc`(s) and `.patch`(s) generated from the pret Pokémon Gen I / II repos. This will ease the building of a VC `.cia` for your ROM Hack down to something as simple as typing `make`.
 
 ## Requirements
 
 * The hack's source repository. It must be based on a recent enough version of the original disassembly, so that it supports building Virtual Console patches:
   **Disassembly**                                    | **Must have been updated to this commit or later**
   ---------------------------------------------------|-------------------------------------------------------
-  [pokered](https://github.com/pret/pokered)         | [fe8d3c51a4056f0dd61dbef332ad9e714b82089a](https://github.com/pret/pokered/commit/fe8d3c51a4056f0dd61dbef332ad9e714b82089a)
-  [pokeyellow](https://github.com/pret/pokeyellow)   | [fbaa5c9d4b48c000a52860a8392fc423c4e312f9](https://github.com/pret/pokeyellow/commit/fbaa5c9d4b48c000a52860a8392fc423c4e312f9)
-  [pokegold](https://github.com/pret/pokegold)       | [3d58fb95569be74c6c229118a425fa22628f1dc3](https://github.com/pret/pokegold/commit/3d58fb95569be74c6c229118a425fa22628f1dc3)
-  [pokecrystal](https://github.com/pret/pokecrystal) | [31c3c94d64e1ac1e40c95acfda7de8b99b4f302b](https://github.com/pret/pokecrystal/commit/31c3c94d64e1ac1e40c95acfda7de8b99b4f302b)
+  [pokered](https://github.com/pret/pokered)         | [fe8d3c5](https://github.com/pret/pokered/commit/fe8d3c51a4056f0dd61dbef332ad9e714b82089a)
+  [pokeyellow](https://github.com/pret/pokeyellow)   | [fbaa5c9](https://github.com/pret/pokeyellow/commit/fbaa5c9d4b48c000a52860a8392fc423c4e312f9)
+  [pokegold](https://github.com/pret/pokegold)       | [3d58fb9](https://github.com/pret/pokegold/commit/3d58fb95569be74c6c229118a425fa22628f1dc3)
+  [pokecrystal](https://github.com/pret/pokecrystal) | [31c3c94](https://github.com/pret/pokecrystal/commit/31c3c94d64e1ac1e40c95acfda7de8b99b4f302b)
 * An original (encrypted or decrypted) `.cia` file for each version that you want to produce—see further below.
 * [ctrtool](https://github.com/3DSGuy/Project_CTR) ctrtool v1.0.3 or later.
 * [makerom](https://github.com/3DSGuy/Project_CTR) makerom v0.18 or later.
@@ -56,7 +56,7 @@ Modify this new `config.mk` file using a text editor of your choice.
 Copy and rename your original dumped .cia files to `<build_name>.orig.cia`, where `<build_name>` is one of the names you put in `rom_names`.
 For example, for Pokémon Crystal, it should be `pokecrystal11.orig.cia`.
 
-Finally, place your obained `seeddb.bin` file inside your `poke-cia` directory.
+Finally, place your obtained `seeddb.bin` file inside your `poke-cia` directory.
 
 ## Usage
 
