@@ -112,13 +112,13 @@ $(1).game.cxi: game.rsf $(1)/romfs/$(1).patch $(1)/romfs/rom/$(1) $(addprefix $(
 endef
 $(foreach rom,${roms_names},$(eval $(call make_cxi_rule,${rom})))
 
-%.manual.cfa: manual.rsf
-	${MAKEROM} -f cfa -o $@ -rsf $<
-
 # This must also be run in the "extracted" directory
-%.cia: %.game.cxi %.manual.cfa
+%.manual.cfa: manual.rsf
 	env -C $* \
-	    ${MAKEROM} -f cia -o $@ -content ../$<:0:0 -content ../$*.manual.cfa:1:1
+	    ${MAKEROM} -f cfa -o ../$@ -rsf ../$<
+
+%.cia: %.game.cxi %.manual.cfa
+	${MAKEROM} -f cia -o $@ -content $<:0:0 -content $*.manual.cfa:1:1
 
 # Catch-all rules for files originating from the source repo
 
