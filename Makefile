@@ -14,19 +14,19 @@ MAKEROM := makerom
 # Include Configuration Settings
 
 include config.mk
-ifeq ($(strip ${roms_names}),)
-$(error Please set the `roms_names` variable in config.mk)
+ifeq ($(strip ${rom_names}),)
+$(error Please set the `rom_names` variable in config.mk)
 endif
 ifeq ($(strip ${repo_path}),)
 $(error Please set the `repo_path` variable in config.mk)
 endif
 
 # Convenience lists
-rom_dirs    := ${roms_names}
-cias        := $(addsuffix .cia, ${roms_names})
-orig_cias   := $(addsuffix .orig.cia, ${roms_names})
-game_cxis   := $(addsuffix .game.cxi, ${roms_names})
-manual_cfas := $(addsuffix .manual.cfa, ${roms_names})
+rom_dirs    := ${rom_names}
+cias        := $(addsuffix .cia, ${rom_names})
+orig_cias   := $(addsuffix .orig.cia, ${rom_names})
+game_cxis   := $(addsuffix .game.cxi, ${rom_names})
+manual_cfas := $(addsuffix .manual.cfa, ${rom_names})
 # List of files upon which a CXI file depends
 cxi_deps    = exheader.bin logo.lz plain.bin exefs/banner.bin exefs/code.bin $(shell [ -e romfs ] && find romfs -type f)
 
@@ -89,14 +89,14 @@ $(1)/romfs/$(1).patch: $${repo_path}/$(1).patch | $(1)/
 	mkdir -p $${@D}
 	cp -T $$< $$@
 endef
-$(foreach rom,${roms_names},$(eval $(call copy_patch_rule,${rom})))
+$(foreach rom,${rom_names},$(eval $(call copy_patch_rule,${rom})))
 
 define copy_rom_rule
 $(1)/romfs/rom/$(1): $${repo_path}/$(1).gbc | $(1)/
 	mkdir -p $${@D}
 	cp -T $$< $$@
 endef
-$(foreach rom,${roms_names},$(eval $(call copy_rom_rule,${rom})))
+$(foreach rom,${rom_names},$(eval $(call copy_rom_rule,${rom})))
 
 # This rule must be run in the "extracted" directory for it to find all the files
 define make_cxi_rule
@@ -110,7 +110,7 @@ $(1).game.cxi: game.rsf $(1)/romfs/$(1).patch $(1)/romfs/rom/$(1) $(addprefix $(
 	               -icon exefs/icon.bin \
 	               -banner exefs/banner.bin
 endef
-$(foreach rom,${roms_names},$(eval $(call make_cxi_rule,${rom})))
+$(foreach rom,${rom_names},$(eval $(call make_cxi_rule,${rom})))
 
 # This must also be run in the "extracted" directory
 %.manual.cfa: manual.rsf

@@ -29,11 +29,11 @@ $ cp config.mk.template config.mk
 
 Modify this new `config.mk` file using a text editor of your choice.
 
-- Define `roms_names` to match the name of the ROM you want to build the `.cia` from, sans file extension.
+- Define `rom_names` to match the name of the ROM you want to build the `.cia` from, sans file extension.
   For example, for Pokémon Crystal, you can uncomment one of the example lines:
 
   ```makefile
-  roms_names := pokecrystal11
+  rom_names := pokecrystal11
   ```
 
   (There should not be more than one uncommented line at a given time.)
@@ -41,7 +41,7 @@ Modify this new `config.mk` file using a text editor of your choice.
   Simply write a space-separated list of names instead:
 
   ```makefile
-  roms_names := redstar bluestar
+  rom_names := redstar bluestar
   ```
 
 - Still in that same file, you must also set the `repo_path` variable to point to the repository containing the ROMs, for example:
@@ -52,7 +52,7 @@ Modify this new `config.mk` file using a text editor of your choice.
 
   (Relative paths must be relative to the `poke-cia` directory.)
 
-Copy and rename your original dumped .cia files to `<build_name>.orig.cia`, where `<build_name>` is one of the names you put in `roms_names`.
+Copy and rename your original dumped .cia files to `<build_name>.orig.cia`, where `<build_name>` is one of the names you put in `rom_names`.
 For example, for Pokémon Crystal, it should be `pokecrystal11.orig.cia`.
 
 Finally, place your obained `seeddb.bin` file inside your `poke-cia` directory.

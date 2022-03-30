@@ -1,9 +1,9 @@
 # Uncomment one of the following lines depending on your repo, or write your own!
-#roms_names := pokered pokeblue
-#roms_names := pokeyellow
-#roms_names := pokegold pokesilver
-#roms_names := pokecrystal11
-#roms_names := my_awesome_hack
+#rom_names := pokered pokeblue
+#rom_names := pokeyellow
+#rom_names := pokegold pokesilver
+#rom_names := pokecrystal11
+#rom_names := my_awesome_hack
 
 # Write the path to the repo here. Here are some examples:
 #repo_path  := ../pokered
