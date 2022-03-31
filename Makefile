@@ -43,23 +43,28 @@ cia: ${cias}
 # Ok to depend on the directories, as this target is phony thus never up to date anyway
 extract: $(addsuffix /,${rom_dirs})
 
+# Calls for the pret repo to check for updates, then checks if the .cias need to be updated
 .PHONY: update
 update:
 	$(MAKE) -C ${repo_path} $(subst poke,,${rom_names}) $(subst poke,,$(addsuffix _vc, ${rom_names}))
 	$(MAKE) ${cias}
 
+# Tides up poke-cia
 .PHONY: tidy
 tidy:
 	rm -f ${cias} ${game_cxis} ${manual_cfas}
 
+# Cleans the poke-cia directory back to a near pristine state.
 .PHONY: clean
 clean: tidy
 	rm -rf ${rom_dirs}
 
+# Tidies up the pret repo and the poke-cia repo.
 .PHONY: prettidy
 prettidy: tidy
 	$(MAKE) -C ${repo_path} tidy
 
+# Cleans the pret repo and the poke-cia repo.
 .PHONY: pretclean
 pretclean: clean
 	$(MAKE) -C ${repo_path} clean
