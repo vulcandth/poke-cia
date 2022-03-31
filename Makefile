@@ -43,13 +43,26 @@ cia: ${cias}
 # Ok to depend on the directories, as this target is phony thus never up to date anyway
 extract: $(addsuffix /,${rom_dirs})
 
-.PHONY: clean
-clean:
+.PHONY: update
+update:
+	$(MAKE) -C ${repo_path} $(subst poke,,${rom_names}) $(subst poke,,$(addsuffix _vc, ${rom_names}))
+	$(MAKE) ${cias}
+
+.PHONY: tidy
+tidy:
 	rm -f ${cias} ${game_cxis} ${manual_cfas}
 
-.PHONY: distclean
-distclean: clean
+.PHONY: clean
+clean: tidy
 	rm -rf ${rom_dirs}
+
+.PHONY: prettidy
+prettidy: tidy
+	$(MAKE) -C ${repo_path} tidy
+
+.PHONY: pretclean
+pretclean: clean
+	$(MAKE) -C ${repo_path} clean
 
 
 # Actual rules
@@ -123,4 +136,4 @@ $(foreach rom,${rom_names},$(eval $(call make_cxi_rule,${rom})))
 # Catch-all rules for files originating from the source repo
 
 ${repo_path}/%:
-	make -C ${@D} ${@F}
+	$(MAKE) -C ${@D} ${@F}
