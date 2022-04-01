@@ -44,10 +44,9 @@ cia: ${cias}
 extract: $(addsuffix /,${rom_dirs})
 
 # Calls for the pret repo to check for updates, then checks if the .cias need to be updated
-.PHONY: update
-update:
+.PHONY: pretupdate
+pretupdate:
 	$(MAKE) -C ${repo_path} $(subst poke,,${rom_names}) $(subst poke,,$(addsuffix _vc, ${rom_names}))
-	$(MAKE) ${cias}
 
 # Tides up poke-cia
 .PHONY: tidy
@@ -103,14 +102,14 @@ pretclean: clean
 # 2. In the `eval` function.
 
 define copy_patch_rule
-$(1)/romfs/$(1).patch: $${repo_path}/$(1).patch | $(1)/
+$(1)/romfs/$(1).patch: $${repo_path}/$(1).patch | $(1)/ pretupdate
 	mkdir -p $${@D}
 	cp -T $$< $$@
 endef
 $(foreach rom,${rom_names},$(eval $(call copy_patch_rule,${rom})))
 
 define copy_rom_rule
-$(1)/romfs/rom/$(1): $${repo_path}/$(1).gbc | $(1)/
+$(1)/romfs/rom/$(1): $${repo_path}/$(1).gbc | $(1)/ pretupdate
 	mkdir -p $${@D}
 	cp -T $$< $$@
 endef
