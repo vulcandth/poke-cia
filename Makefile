@@ -43,13 +43,30 @@ cia: ${cias}
 # Ok to depend on the directories, as this target is phony thus never up to date anyway
 extract: $(addsuffix /,${rom_dirs})
 
-.PHONY: clean
-clean:
+# Calls for the pret repo to check for updates, then checks if the .cias need to be updated
+.PHONY: pretupdate
+pretupdate:
+	$(MAKE) -C ${repo_path} $(subst poke,,${rom_names}) $(subst poke,,$(addsuffix _vc, ${rom_names}))
+
+# Tides up poke-cia
+.PHONY: tidy
+tidy:
 	rm -f ${cias} ${game_cxis} ${manual_cfas}
 
-.PHONY: distclean
-distclean: clean
+# Cleans the poke-cia directory back to a near pristine state.
+.PHONY: clean
+clean: tidy
 	rm -rf ${rom_dirs}
+
+# Tidies up the pret repo and the poke-cia repo.
+.PHONY: prettidy
+prettidy: tidy
+	$(MAKE) -C ${repo_path} tidy
+
+# Cleans the pret repo and the poke-cia repo.
+.PHONY: pretclean
+pretclean: clean
+	$(MAKE) -C ${repo_path} clean
 
 
 # Actual rules
@@ -85,14 +102,14 @@ distclean: clean
 # 2. In the `eval` function.
 
 define copy_patch_rule
-$(1)/romfs/$(1).patch: $${repo_path}/$(1).patch | $(1)/
+$(1)/romfs/$(1).patch: $${repo_path}/$(1).patch | $(1)/ pretupdate
 	mkdir -p $${@D}
 	cp -T $$< $$@
 endef
 $(foreach rom,${rom_names},$(eval $(call copy_patch_rule,${rom})))
 
 define copy_rom_rule
-$(1)/romfs/rom/$(1): $${repo_path}/$(1).gbc | $(1)/
+$(1)/romfs/rom/$(1): $${repo_path}/$(1).gbc | $(1)/ pretupdate
 	mkdir -p $${@D}
 	cp -T $$< $$@
 endef
@@ -123,4 +140,4 @@ $(foreach rom,${rom_names},$(eval $(call make_cxi_rule,${rom})))
 # Catch-all rules for files originating from the source repo
 
 ${repo_path}/%:
-	make -C ${@D} ${@F}
+	$(MAKE) -C ${@D} ${@F}
