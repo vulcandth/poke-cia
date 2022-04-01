@@ -102,16 +102,16 @@ pretclean: clean
 # 2. In the `eval` function.
 
 define copy_patch_rule
-$(1)/romfs/$(1).patch: $${repo_path}/$(1).patch | $(1)/ pretupdate
+$(1)/romfs/$(1).patch: $(1)/ | pretupdate
 	mkdir -p $${@D}
-	cp -T $$< $$@
+	cp -T $${repo_path}/$(1).patch $$@
 endef
 $(foreach rom,${rom_names},$(eval $(call copy_patch_rule,${rom})))
 
 define copy_rom_rule
-$(1)/romfs/rom/$(1): $${repo_path}/$(1).gbc | $(1)/ pretupdate
+$(1)/romfs/rom/$(1): $(1)/ | pretupdate
 	mkdir -p $${@D}
-	cp -T $$< $$@
+	cp -T $${repo_path}/$(1).gbc $$@
 endef
 $(foreach rom,${rom_names},$(eval $(call copy_rom_rule,${rom})))
 
@@ -130,14 +130,12 @@ endef
 $(foreach rom,${rom_names},$(eval $(call make_cxi_rule,${rom})))
 
 # This must also be run in the "extracted" directory
-%.manual.cfa: manual.rsf
-	env -C $* \
-	    ${MAKEROM} -f cfa -o ../$@ -rsf ../$<
+define make_cfa_rule
+$(1).manual.cfa: manual.rsf $(1)/
+	env -C $(1)/ \
+	    ${MAKEROM} -f cfa -o ../$$@ -rsf ../$$<
+endef
+$(foreach rom,${rom_names},$(eval $(call make_cfa_rule,${rom})))
 
 %.cia: %.game.cxi %.manual.cfa
 	${MAKEROM} -f cia -o $@ -content $<:0:0 -content $*.manual.cfa:1:1
-
-# Catch-all rules for files originating from the source repo
-
-${repo_path}/%:
-	$(MAKE) -C ${@D} ${@F}
