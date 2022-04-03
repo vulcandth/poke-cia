@@ -102,14 +102,14 @@ pretclean: clean
 # 2. In the `eval` function.
 
 define copy_patch_rule
-$(1)/romfs/$(1).patch: $(1)/ | pretupdate
+$(1)/romfs/$(1).patch: $(1)/ pretupdate
 	mkdir -p $${@D}
 	cp -T $${repo_path}/$(1).patch $$@
 endef
 $(foreach rom,${rom_names},$(eval $(call copy_patch_rule,${rom})))
 
 define copy_rom_rule
-$(1)/romfs/rom/$(1): $(1)/ | pretupdate
+$(1)/romfs/rom/$(1): $(1)/ pretupdate
 	mkdir -p $${@D}
 	cp -T $${repo_path}/$(1).gbc $$@
 endef
