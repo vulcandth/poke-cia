@@ -53,10 +53,16 @@ Modify this new `config.mk` file using a text editor of your choice.
 - Still in that same file, you must also set the `repo_path` variable to point to the repository containing the ROMs: (The default `repo_path` setting assumes you are cloning into the pret repo)
   
   ```makefile
-  repo_path  := ../
+  repo_path := ../
   ```
   
   (Relative paths must be relative to the `poke-cia` directory. `../` means the directory above the poke-cia directory.)
+  
+- Finally in that same file, you will need to set the `rom_targets` variable. This variable is used by poke-cia to run the appropriate `make` command build targets on the repository specified in the `repo_path` variable. 
+
+  ```makefile
+  repo_targets := red red_vc blue blue_vc
+  ```
 
 Copy and rename your original dumped .cia files to `<build_name>.orig.cia`, where `<build_name>` is one of the names you put in `rom_names`.
 For example, for Pokémon Crystal, it should be `pokecrystal11.orig.cia`.
