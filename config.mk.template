@@ -1,13 +1,22 @@
-# Uncomment one of the following lines depending on your repo, or write your own!
-#rom_names := pokered pokeblue
-#rom_names := pokeyellow
-#rom_names := pokegold pokesilver
-#rom_names := pokecrystal11
-#rom_names := my_awesome_hack
+# Define repo_path, rom_names, and rom_targets for your particular project!
+# The commented ones below are examples.
 
-# Write the path to the repo here. Here are some examples. Default assumes that
-# you cloned poke-cia inside the pret repo. ../ means the directory above this one:
-repo_path   := ../
-#repo_path  := ../pokered
-#repo_path  := /drives/c/Users/ISSOtm/Documents/pokecrystal
-#repo_path  := /d/vulcandth/pkmn/pokedarkgold
+#repo_path := ../
+#rom_names := pokered pokeblue
+#rom_targets := red red_vc blue blue_vc
+
+#repo_path := ../pokecrystal
+#rom_names := pokecrystal
+#rom_targets := crystal11 crystal11_vc
+
+#repo_path := /drives/c/Users/ISSOtm/Desktop/pokegold
+#rom_names := pokegold
+#rom_targets := gold gold_vc
+
+#repo_path := ~/polishedcrystal
+#rom_names := polishedcrystal-3.0.0-beta
+#rom_targets := crystal vc
+
+#repo_path := /d/vulcandth/pkmn/my_awesome_hack
+#rom_names := my_awesome_hack
+#rom_targets := hack hack_vc
