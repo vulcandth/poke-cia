@@ -15,7 +15,7 @@ This repo provides a simple extension that repackages a Nintendo 3DS Virtual Con
 
 * An original (encrypted or decrypted) `.cia` file for each version that you want to produce—see further below.
 
-* [ctrtool](https://github.com/3DSGuy/Project_CTR) ctrtool v1.0.3 or later.
+* [ctrtool](https://github.com/3DSGuy/Project_CTR) ctrtool v1.1.0 or later.
 
 * [makerom](https://github.com/3DSGuy/Project_CTR) makerom v0.18 or later.
 

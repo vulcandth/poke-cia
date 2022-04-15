@@ -4,7 +4,7 @@
 # (Or from `config.mk` if you want to persist those)
 
 # Clear this to let ctrtool speak its mind. It is quite talkative.
-VERBOSE_CTRTOOL := >/dev/null
+VERBOSE_CTRTOOL := -q
 
 # Paths to the executables (mind that lack of slashes means PATH will be searched instead!)
 CTRTOOL := ctrtool
@@ -88,11 +88,13 @@ repoclean: clean
 	           --romfsdir=$@romfs \
 	           --logo=$@logo.lz \
 	           --plainrgn=$@plain.bin \
-	           $< ${VERBOSE_CTRTOOL}
+			   ${VERBOSE_CTRTOOL} \
+	           $<
 	${CTRTOOL} --cidx 1 \
 	           --seeddb=seeddb.bin \
 	           --romfsdir=$@manual \
-	           $< ${VERBOSE_CTRTOOL}
+			   ${VERBOSE_CTRTOOL} \
+	           $<
 	rm -f $@romfs/rom/*
 	rm -f $@romfs/*.patch
 
