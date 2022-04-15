@@ -50,7 +50,7 @@ Modify this new `config.mk` file using a text editor of your choice.
   rom_names := magenta turquoise
   ```
 
-- Still in that same file, you must also set the `repo_path` variable to point to the repository containing the ROMs: (The default `repo_path` setting assumes you are cloning into the pret repo)
+- Still in that same file, you must also set the `repo_path` variable to point to the repository containing the ROMs: (The default `repo_path` setting assumes you are cloning into the rom's repo)
   
   ```makefile
   repo_path := ../
@@ -87,11 +87,11 @@ The following is a list of notable poke-cia commands:
 
 `make tidy`: Removes any built `.cia`, `.cxi`, or `cfa` files in the poke-cia repo.
 
-`make prettidy`: Performs the same function as `make tidy` above, but also asks the pret repo to run it's version of `make tidy`.
+`make repotidy`: Performs the same function as `make tidy` above, but also asks the rom's repo to run it's version of `make tidy`.
 
 `make clean`: Performs the same function as `make tidy`, but also deletes the extracted rom directories in the poke-cia repo.
 
-`make pretclean`: Performs the same function as `make clean` above, but also asks the pret repo to run it's own version of `make clean`. 
+`make repoclean`: Performs the same function as `make clean` above, but also asks the rom's repo to run it's own version of `make clean`. 
 
 ## Special Credits
 
