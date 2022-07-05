@@ -97,6 +97,6 @@ The following is a list of notable poke-cia commands:
 
 I would like to give special credits to the following:
 
-* @mid-kid originally came up with the idea of this tool and this extension is developed based on his orig repo.
-* @ISSOtm spent a lot of time helping to restructure the extension, and getting it ready for release.
-* @jakcron went out of their way to troubleshoot our repos to help resolve a bug in thre prequisite tool ctrtool. 
+* [@mid-kid](https://github.com/mid-kid) originally came up with the idea of this tool and this extension is developed based on his orig repo.
+* [@ISSOtm](https://github.com/ISSOtm) spent a lot of time helping to restructure the extension, and getting it ready for release.
+* [@jakcron](https://github.com/jakcron) went out of their way to troubleshoot our repos to help resolve a bug in thre prequisite tool ctrtool. 
