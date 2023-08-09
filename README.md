@@ -93,6 +93,14 @@ The following is a list of notable poke-cia commands:
 
 `make repoclean`: Performs the same function as `make clean` above, but also asks the rom's repo to run it's own version of `make clean`. 
 
+### MBC30 Patching
+
+For ROM hacks that require 4MB MBC30 ROM support, you can use the `build_mbc30` configuration option. Be default, this option is set to `false`. When enabled, the `mbc30patch.py` will automatically run after extracing your `.orig.cia` files,
+and will patch the `code.bin` to allow MBC30 roms to have `$ff` number of banks instead of `$7f` if the `code.bin` matches the hash of an original `.cia` `code.bin`.
+Currently we support the `code.bin` files based on the following original `.cia` files (More will be added later as the correct addresses to patch are discovered):
+
+* `Pokémon Crystal (CTR-N-QBRA) (UE) (v0.1.0)` - `d48acf4c062884c9ef6b546c573db2125f5f9253`
+
 ## Special Credits
 
 I would like to give special credits to the following:
