@@ -6,7 +6,7 @@
 #rom_targets := red red_vc blue blue_vc
 
 #repo_path   := ../pokecrystal
-#rom_names   := pokecrystal
+#rom_names   := pokecrystal11
 #rom_targets := crystal11 crystal11_vc
 
 #repo_path   := /drives/c/Users/ISSOtm/Desktop/pokegold
