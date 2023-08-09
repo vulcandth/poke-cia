@@ -20,3 +20,6 @@
 #repo_path   := /d/vulcandth/pkmn/my_awesome_hack
 #rom_names   := my_awesome_hack
 #rom_targets := hack hack_vc
+
+# Set to true to run the mbc30patch.py script after orig.cia extraction
+build_mbc30 := false

@@ -97,6 +97,10 @@ repoclean: clean
 	           $<
 	rm -f $@romfs/rom/*
 	rm -f $@romfs/*.patch
+	@if [ "$(build_mbc30)" = "true" ]; then \
+		python3 mbc30patch.py ; \
+	fi
+
 
 # romfs files have the pattern appear twice in the path, which breaks pattern rules; we have to use `eval` instead
 # Careful that the contents of the `define`s are expanded twice:
