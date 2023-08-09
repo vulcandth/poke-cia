@@ -1,6 +1,6 @@
 # CIA building extension for pret Pokémon Gen I / II Repos
 
-This repo provides a simple extension that repackages a Nintendo 3DS Virtual Console (VC) `.cia` file using the built `.gbc`(s) and `.patch`(s) generated from the pret Pokémon Gen I / II repos. This will ease the building of a VC `.cia` for your ROM Hack down to something as simple as typing `make`.
+This repo provides a simple extension that repackages a Nintendo 3DS Virtual Console (VC) `.cia` file using the built `.gbc`(s) and `.patch`(s) generated from the pret Pokémon Gen I / II repos. This will simplify building the VC `.cia` for your ROM Hack down to something as simple as typing `make`.
 
 ## Requirements
 
@@ -27,7 +27,7 @@ Obtaining the **original** `.cia` file dump is outside of the scope of this docu
 
 First, [clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository), and `cd` into it.
 
-Next, you will need to create your `config.mk` file by using `config.mk.template` as a base.
+Next, you will need to create your `config.mk` by copying from `config.mk.template`.
 
 ```console
 $ cp config.mk.template config.mk
@@ -35,7 +35,7 @@ $ cp config.mk.template config.mk
 
 Modify this new `config.mk` file using a text editor of your choice.
 
-- Define `rom_names` to match the name of the ROM you want to build the `.cia` from, sans file extension.
+- Define `rom_names` to match the name of the ROM you want to build the `.cia` from, without the file extension.
   For example, for Pokémon Crystal, you can uncomment one of the example lines:
   
   ```makefile
@@ -43,14 +43,14 @@ Modify this new `config.mk` file using a text editor of your choice.
   ```
   
   (There should not be more than one uncommented line at a given time.)
-  You can also build more than one `.cia` at a time!
+  If you want to build multiple .cia files at once,
   Simply write a space-separated list of names instead:
   
   ```makefile
   rom_names := magenta turquoise
   ```
 
-- Still in that same file, you must also set the `repo_path` variable to point to the repository containing the ROMs: (The default `repo_path` setting assumes you are cloning into the rom's repo)
+- In the same file, set the repo_path variable to point to the repository containing the ROMs. Note: The default repo_path assumes you're cloning into the ROM's repository.
   
   ```makefile
   repo_path := ../
@@ -58,7 +58,7 @@ Modify this new `config.mk` file using a text editor of your choice.
   
   (Relative paths must be relative to the `poke-cia` directory. `../` means the directory above the poke-cia directory.)
   
-- Finally in that same file, you will need to set the `rom_targets` variable. This variable is used by poke-cia to run the appropriate `make` command build targets on the repository specified in the `repo_path` variable. 
+- Finally, in that same file, set the rom_targets variable. Poke-cia uses this to run the appropriate make command build targets based on the repo_path variable.
 
   ```makefile
   repo_targets := red red_vc blue blue_vc
@@ -83,28 +83,32 @@ It is also possible to specify these variables in `config.mk` instead, which sav
 
 The following is a list of notable poke-cia commands:
 
-`make extract`: Will simply extract the `.orig.cia` files, but will not automatically rebuild them into a `.cia`. This is useful if you want to manually update files before rebuilding. Simply run `make` when you are done to finish building.
+`make extract`: Extracts the .orig.cia files without rebuilding them into a .cia. Useful for manual updates. Run make afterwards to complete the build.
 
 `make tidy`: Removes any built `.cia`, `.cxi`, or `cfa` files in the poke-cia repo.
 
-`make repotidy`: Performs the same function as `make tidy` above, but also asks the rom's repo to run it's version of `make tidy`.
+`make repotidy`: Performs the same function as `make tidy` above, but also instructs the rom's repo to run its version of `make tidy`.
 
 `make clean`: Performs the same function as `make tidy`, but also deletes the extracted rom directories in the poke-cia repo.
 
-`make repoclean`: Performs the same function as `make clean` above, but also asks the rom's repo to run it's own version of `make clean`. 
+`make repoclean`: Performs the same function as `make clean` above, but also instructs the rom's repo to run its own version of `make clean`. 
 
 ### MBC30 Patching
 
-For ROM hacks that require 4MB MBC30 ROM support, you can use the `build_mbc30` configuration option. Be default, this option is set to `false`. When enabled, the `mbc30patch.py` will automatically run after extracing your `.orig.cia` files,
-and will patch the `code.bin` to allow MBC30 roms to have `$ff` number of banks instead of `$7f` if the `code.bin` matches the hash of an original `.cia` `code.bin`.
-Currently we support the `code.bin` files based on the following original `.cia` files (More will be added later as the correct addresses to patch are discovered):
+For ROM hacks that necessitate 4MB MBC30 ROM support:
 
-* `Pokémon Crystal (CTR-N-QBRA) (UE) (v0.1.0)` - `d48acf4c062884c9ef6b546c573db2125f5f9253`
+- **Configuration**: Utilize the `build_mbc30` option. 
+  - **Default Setting**: `false`.
+  - **Action When Enabled**: Upon activation, the script `mbc30patch.py` is triggered post the extraction of `.orig.cia` files. This script modifies the `code.bin` to permit MBC30 ROMs to accommodate `$ff` banks, as opposed to the standard `$7f`. However, this change is conditional: the `code.bin` must correspond to the hash of an authentic `.cia` `code.bin`.
+  
+- **Supported Versions**: Currently, the supported `code.bin` files are based on specific original `.cia` versions. As we identify the correct addresses for patching, more versions will be incorporated.
+  - `Pokémon Crystal (CTR-N-QBRA) (UE) (v0.1.0)`:
+    - Hash: `d48acf4c062884c9ef6b546c573db2125f5f9253`
 
 ## Special Credits
 
 I would like to give special credits to the following:
 
-* [@mid-kid](https://github.com/mid-kid) originally came up with the idea of this tool and this extension is developed based on his orig repo.
-* [@ISSOtm](https://github.com/ISSOtm) spent a lot of time helping to restructure the extension, and getting it ready for release.
-* [@jakcron](https://github.com/jakcron) went out of their way to troubleshoot our repos to help resolve a bug in the prequisite tool ctrtool. 
+* [@mid-kid](https://github.com/mid-kid) originally came up with the idea of this tool, and this extension is developed based on his original repo.
+* [@ISSOtm](https://github.com/ISSOtm) contributed significantly by restructuring the extension and preparing it for release.
+* [@jakcron](https://github.com/jakcron) went above and beyond by troubleshooting our repository to address a bug in the prerequisite tool, ctrtool.
